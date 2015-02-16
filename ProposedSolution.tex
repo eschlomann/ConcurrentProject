@@ -5,8 +5,30 @@
 
 \section*{\textsc{\Large Proposed Solution}}
 
-In addition to the locks that we develop for assignments in class, we will implement (NUMBER HERE) other locks to do performance comparison. Additionally early testing will be done to determine a case where there is not a dominiant performer and develop a hybrid lock that will best meet the specific needs of this case.
+In addition to the locks that we develop for assignments in class, we will implement at least 2 (likely more) other locks to do performance comparison. Additionally early testing will be done to determine a case where there is not a dominiant performer and develop a hybrid lock that will best meet the specific needs of this case.
 
-(yeah i know that this needs more but well talk tomorrow like during lunch and crank it out)
+Though this is by no means definitive. This is the tentative list of the locking methods to be used, this list may be modified and added to as the class continues and more algorithms and locking methodologies are discussed 
+
+\smallskip
+
+\begin{itemize}
+\item Java's lock interface
+\item Peterson Tree Lock (Class)
+\item Filter Lock (Class)
+\item Bakery Lock (Class)
+\item \href{http://en.wikipedia.org/wiki/Eisenberg_%26_McGuire_algorithm}{Eisenberg \& McGuire algorithm}
+\item \href{http://en.wikipedia.org/wiki/Szymanski%27s_Algorithm}{Szymanski's Algorithm}
+\end{itemize}
+
+Based on inital testing with Java's built in lock class and the locks written for homework assignments, a case where there is no clear best performer can be identified. A hybrid locking algorith can then be developed from the existing locks in order to best serve that specific case. 
+
+Once all of the locks are developed, the rigorous testing can begin. The following are variables that need to be modified and tested to obtain meaningful performance comparison:
+
+\begin{itemize}
+\item Number of threads
+\item Number of machine cores (and memory differences)
+\item High vs low shared resourse contention
+\item Usage requirement of program
+\end{itemize}
 
 \end{document}
