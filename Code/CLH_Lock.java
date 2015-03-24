@@ -1,4 +1,4 @@
-import java.util.concurrent.atomic.AtomicReference;//<QNode>;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CLH_Lock{
 	private ThreadLocal<QNode> myPred;  
