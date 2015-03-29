@@ -54,7 +54,7 @@ public class Test{
 	//Tests the lock many times.  outputs the result at the end
 	public static void main(String args[]){
 		int wrong = 0;
-		int numTries = 1;
+		int numTries = 100;
 		long startTime = System.nanoTime();
 		 for(int i = 0; i < numTries; i++){
 			Test Tester = new Test();
