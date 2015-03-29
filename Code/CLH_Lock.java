@@ -20,16 +20,16 @@ public class CLH_Lock{
     }
 
     public void lock(){
-    	QNode qnode = myNode.get();
-    	qnode.locked = true;
-    	QNode pred = tail.getAndSet(qnode);
+    	QNode qnode    = myNode.get();
+    	qnode.locked   = true;
+    	QNode pred     = tail.getAndSet(qnode);
     	myPred.set(pred);
-    	while(pred.locked) {}
+    	while(pred.locked) {};
     }
 
 	public void unlock(){
-		QNode qnode = myNode.get();
-		qnode.locked = false;
+		QNode qnode   = myNode.get();
+		qnode.locked  = false;
 		myNode.set(myPred.get());
 	}
 }

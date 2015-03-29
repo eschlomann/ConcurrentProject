@@ -14,11 +14,11 @@ public class MCS_Lock{
 	}
 
 	public void lock(){
-		QNode qnode = myNode.get();
-		QNode pred = tail.getAndSet(qnode);
+		QNode qnode 	= myNode.get();
+		QNode pred 		= tail.getAndSet(qnode);
 		if(pred != null){
-			qnode.locked = true;
-			pred.next = qnode;
+			qnode.locked 	= true;
+			pred.next 		= qnode;
 			while(qnode.locked){}
 		}
 	}
@@ -31,8 +31,8 @@ public class MCS_Lock{
 			}
 			while(qnode.next == null) {}
 		}
-		qnode.next.locked = false;
-		qnode.next = null;
+		qnode.next.locked 	= false;
+		qnode.next 			= null;
 	}
 
 }
