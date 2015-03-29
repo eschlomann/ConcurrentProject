@@ -21,15 +21,15 @@ public class CLH_Lock{
 
     public void lock(){
     	QNode qnode    = myNode.get();
-    	qnode.locked   = true;
+    	qnode.locked.set(true);
     	QNode pred     = tail.getAndSet(qnode);
     	myPred.set(pred);
-    	while(pred.locked) {};
+    	while(pred.locked.get()) {};
     }
 
 	public void unlock(){
 		QNode qnode   = myNode.get();
-		qnode.locked  = false;
+		qnode.locked.set(false);
 		myNode.set(myPred.get());
 	}
 }

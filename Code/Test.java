@@ -4,10 +4,11 @@ public class Test{
 
 	//Initialize class variables
 	final private static int NUMTHREADS 	= 8;
-	final private static int countToThis 	= 500;
+	final private static int countToThis 	= 1000;
 	private static volatile int counter 	= 0;
 	Thread[] threads 	= new Thread[NUMTHREADS];
 	// MCS_Lock lock 		= new MCS_Lock();
+	// MCSLock lock 		= new MCSLock();
 	CLH_Lock lock 		= new CLH_Lock();
 	// ReentrantLock lock = new ReentrantLock();
 

@@ -1,11 +1,10 @@
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MCS_Lock{
-	AtomicReference<QNode> tail;
+	private AtomicReference<QNode> tail = new AtomicReference<QNode>(null); 
 	ThreadLocal<QNode> myNode;
 
 	public MCS_Lock(){
-		AtomicReference queue = new AtomicReference<QNode>(null);
 		myNode = new ThreadLocal<QNode>(){
 			protected QNode initialValue(){
 				return new QNode();
@@ -17,9 +16,9 @@ public class MCS_Lock{
 		QNode qnode 	= myNode.get();
 		QNode pred 		= tail.getAndSet(qnode);
 		if(pred != null){
-			qnode.locked 	= true;
+			qnode.locked.set(true);
 			pred.next 		= qnode;
-			while(qnode.locked){}
+			while(qnode.locked.get()){}
 		}
 	}
 
@@ -31,7 +30,7 @@ public class MCS_Lock{
 			}
 			while(qnode.next == null) {}
 		}
-		qnode.next.locked 	= false;
+		qnode.next.locked.set(false);
 		qnode.next 			= null;
 	}
 
