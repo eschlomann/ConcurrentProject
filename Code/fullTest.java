@@ -9,6 +9,7 @@ public class fullTest{
 	private CLH_Lock c_lock = new CLH_Lock();
 	private MCS_Lock m_lock = new MCS_Lock();
 	private ReentrantLock r_lock = new ReentrantLock();
+	private Bakery b_lock;
 	// T lock;
 
 	//SubClass that is the "thread"
@@ -41,6 +42,9 @@ public class fullTest{
 					case "java":
 						r_lock.lock();
 					break;
+					case "Bakery":
+						b_lock.lock(this.threadID);
+					break;
 				}
 				try{
 					counter = counter + 1;
@@ -56,6 +60,9 @@ public class fullTest{
 						case "java":
 							r_lock.unlock();
 						break;
+						case "Bakery":
+							b_lock.unlock(this.threadID);
+						break;
 					}
 				}
 			}
@@ -68,6 +75,7 @@ public class fullTest{
 		c_lock = new CLH_Lock();
 		m_lock = new MCS_Lock();
 		r_lock = new ReentrantLock();
+		b_lock = new Bakery(NUMTHREADS);
 		threads = new Thread[NUMTHREADS];
 		for (int i = 0; i < NUMTHREADS; i++){
 			threads[i] = new threadInstance( i , type, countToThis);
@@ -120,6 +128,19 @@ public class fullTest{
 				fullTest Tester = new fullTest();
 				try{
 					Tester.test("java", NUMTHREADS, countToThis);
+				}
+				catch(Exception e) {}
+				counter = 0;
+			}
+			long endTime = System.nanoTime();
+			System.out.println((endTime - startTime)/1000000 + " milliseconds");
+		}
+		if (lockType.equals("Bakery") || lockType.equals("all")) {
+			long startTime = System.nanoTime();
+		 	for(int i = 0; i < numTries; i++){
+				fullTest Tester = new fullTest();
+				try{
+					Tester.test("Bakery", NUMTHREADS, countToThis);
 				}
 				catch(Exception e) {}
 				counter = 0;
