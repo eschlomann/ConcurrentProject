@@ -29,6 +29,7 @@ public class fullTest{
 		//when initiated.  Uses the tree lock to prevent
 		//other threads from editting.
 		public void run(){	
+			// System.out.println(this.type);
 			for ( int i = 0; i < this.countToThis; i++ ){
 				switch(this.type){
 					case "CLH":
@@ -64,6 +65,9 @@ public class fullTest{
 	//function to run the test.  creates the threads, 
 	//starts them, and joins them
 	private void test(String type, int NUMTHREADS, int countToThis){
+		c_lock = new CLH_Lock();
+		m_lock = new MCS_Lock();
+		r_lock = new ReentrantLock();
 		threads = new Thread[NUMTHREADS];
 		for (int i = 0; i < NUMTHREADS; i++){
 			threads[i] = new threadInstance( i , type, countToThis);
@@ -84,7 +88,6 @@ public class fullTest{
 		int countToThis = Integer.parseInt(args[2]);
 		String lockType = args[3];
 
-		System.out.println(lockType);
 		if (lockType.equals("CLH") || lockType.equals("all")) {
 			long startTime = System.nanoTime();
 		 	for(int i = 0; i < numTries; i++){
