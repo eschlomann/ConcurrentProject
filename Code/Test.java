@@ -71,5 +71,6 @@ public class Test{
 		long endTime = System.nanoTime();
 		System.out.println((endTime - startTime)/1000000 + " milliseconds");
 		System.out.println("Wrong: " + wrong + "/" + numTries);
+		System.out.println(counter);
 	}
 }
