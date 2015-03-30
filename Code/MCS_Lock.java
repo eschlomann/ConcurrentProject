@@ -17,21 +17,27 @@ public class MCS_Lock{
 		QNode pred 		= tail.getAndSet(qnode);
 		if(pred != null){
 			qnode.locked.set(true);
-			pred.next 		= qnode;
+			pred.next.set(qnode);
+			// pred.next 		= qnode;
 			while(qnode.locked.get()){}
 		}
 	}
 
 	public void unlock(){
 		QNode qnode = myNode.get();
-		if(qnode.next == null){
+		if(qnode.next.get() == null){
 			if(tail.compareAndSet(qnode, null)){
 				return;
 			}
-			while(qnode.next == null) {}
+			while(qnode.next.get() == null) {}
 		}
-		qnode.next.locked.set(false);
-		qnode.next 			= null;
+		QNode nextNode = qnode.next.get();
+		if(nextNode != null){
+			nextNode.locked.set(false);
+			qnode.next.set(null);
+		}
+		// qnode.next.locked.set(false);
+		// qnode.next 			= null;
 	}
 
 }

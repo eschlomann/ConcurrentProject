@@ -4,11 +4,11 @@ public class fullTest{
 
 	//Initialize class variables
 	// private int NUMTHREADS 	= 8;
-	private static volatile int counter 	= 0;
+	private static volatile int counter;
 	Thread[] threads;
-	private CLH_Lock c_lock = new CLH_Lock();
-	private MCS_Lock m_lock = new MCS_Lock();
-	private ReentrantLock r_lock = new ReentrantLock();
+	private CLH_Lock c_lock;
+	private MCS_Lock m_lock;
+	private ReentrantLock r_lock;
 	private Bakery b_lock;
 	// T lock;
 
@@ -72,11 +72,13 @@ public class fullTest{
 	//function to run the test.  creates the threads, 
 	//starts them, and joins them
 	private void test(String type, int NUMTHREADS, int countToThis){
-		c_lock = new CLH_Lock();
-		m_lock = new MCS_Lock();
-		r_lock = new ReentrantLock();
-		b_lock = new Bakery(NUMTHREADS);
+		counter = 0;
+		c_lock 	= new CLH_Lock();
+		m_lock 	= new MCS_Lock();
+		r_lock 	= new ReentrantLock();
+		b_lock 	= new Bakery(NUMTHREADS);
 		threads = new Thread[NUMTHREADS];
+
 		for (int i = 0; i < NUMTHREADS; i++){
 			threads[i] = new threadInstance( i , type, countToThis);
 			threads[i].start();
@@ -91,8 +93,8 @@ public class fullTest{
 
 	//Tests the lock many times.  outputs the result at the end
 	public static void main(String args[]){
-		int numTries = Integer.parseInt(args[0]);
-		int NUMTHREADS = Integer.parseInt(args[1]);
+		int numTries 	= Integer.parseInt(args[0]);
+		int NUMTHREADS 	= Integer.parseInt(args[1]);
 		int countToThis = Integer.parseInt(args[2]);
 		String lockType = args[3];
 
@@ -103,11 +105,13 @@ public class fullTest{
 				try{
 					Tester.test("CLH", NUMTHREADS, countToThis);
 				}
-				catch(Exception e) {}
+				catch(Exception e) {
+					System.out.println("errored");
+				}
 				counter = 0;
 			}
 			long endTime = System.nanoTime();
-			System.out.println((endTime - startTime)/1000000 + " milliseconds");
+			System.out.println(((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
 		} 
 		if (lockType.equals("MCS") || lockType.equals("all")) {
 			long startTime = System.nanoTime();
@@ -120,7 +124,7 @@ public class fullTest{
 				counter = 0;
 			}
 			long endTime = System.nanoTime();
-			System.out.println((endTime - startTime)/1000000 + " milliseconds");
+			System.out.println(((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
 		} 
 		if (lockType.equals("java") || lockType.equals("all")) {
 			long startTime = System.nanoTime();
@@ -132,8 +136,8 @@ public class fullTest{
 				catch(Exception e) {}
 				counter = 0;
 			}
-			long endTime = System.nanoTime();
-			System.out.println((endTime - startTime)/1000000 + " milliseconds");
+			long endTime = System.nanoTime(); 
+			System.out.println(((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
 		}
 		if (lockType.equals("Bakery") || lockType.equals("all")) {
 			long startTime = System.nanoTime();
@@ -146,7 +150,7 @@ public class fullTest{
 				counter = 0;
 			}
 			long endTime = System.nanoTime();
-			System.out.println((endTime - startTime)/1000000 + " milliseconds");
+			System.out.println(((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
 		}
 	}
 }
