@@ -1,0 +1,13 @@
+\documentclass[finalProject.tex]{subfiles}
+\begin{document}
+
+\bigskip
+
+\section*{\textsc{\Large Concurrency Issues}}
+	
+	The main issue with concurrent programming is the manipulation of shared variables.  To protect these shared resources from being overwritten by separate threads, locks are used.  Implementing locks requires the design of locking systems and the construction of these systems as well.  
+	
+	One of the more common locking systems is the Peterson Lock.  This lock uses a simple idea, and is used for two threads.  The lock has two variables, flag (used to signal the desire to go to the critical section), and the victim (when the lock is called, the calling thread declares itself as the victim, and allows the other thread to go first).  
+	
+	The Peterson Lock can be expanded to be used for $n$-threads.  Other systems, such as the Bakery Lock and the Filter Lock are designed for $n$-thread systems.  We will have to implement these locks and write tests to acquire statistics for analysis.  With the analysis, we will then develop a hybrid lock that will perform well in certain situations.
+\end{document}
