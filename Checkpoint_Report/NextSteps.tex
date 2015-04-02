@@ -5,4 +5,13 @@
 
 \section*{\textsc{\Large Next Steps}}
 
+As we have only implemented 3 locks thus far, we need to add one additional lock as well as develop the hybrid lock. After those locks are developed extensive testing will be required.
+For the additional lock we are unsure on what to choose. More research is needed to choose an algorithm that can compete with the CLH, MCS and java lock. Szymanski's algorithm is interesting
+ as it is one of the first algorithms that satisfies n-thread mutual exclusion, but is lacking in terms of speed. At higher thread numbers the same can be said for the bakery lock.
+The options that we are considering are Knuth/De Bruijn, Eisenberg–McGuire, Hehner–Shyamasundar, Dekker, as well as many others. We are looking for an option that can perform well and give additional ideas for how our hybrid lock should function.
+
+Another task that needs to be accomplished deals with the development of the hybrid lock. We have not isolated the case in which our current locks perform poorly. Our testing so far has given relatively expected results. Cases that we have are considering thus far are high-thread count with low contention and high thread count with strict memory constraints. Many algorithms currently seek to tackle these challenges, and it should be relatively straightforward to combine a few of them into a functional hybrid algorithm,
+
+Testing is going to be the next objective after all of the locks are developed. Thus far, we have only done testing with current algorithms at high contention. We need to introduce a mechanism to test the locks at lower contention. As mentioned earlier threads on our systems jump in execution time after 8 threads, we need to find a system that does not have this same constrain, and continue testing there. Early testing may also help narrow our scope and focus in on which case to design our hybrid lock for.  
+
 \end{document}
