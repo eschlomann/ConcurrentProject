@@ -18,7 +18,6 @@ public class MCS_Lock{
 		if(pred != null){
 			qnode.locked.set(true);
 			pred.next.set(qnode);
-			// pred.next 		= qnode;
 			while(qnode.locked.get()){}
 		}
 	}
@@ -36,8 +35,6 @@ public class MCS_Lock{
 			nextNode.locked.set(false);
 			qnode.next.set(null);
 		}
-		// qnode.next.locked.set(false);
-		// qnode.next 			= null;
 	}
 
 }

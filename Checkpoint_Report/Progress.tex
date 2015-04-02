@@ -18,4 +18,6 @@ These results were found by averaging the execution of 500 trials for each case.
 
 The test was only executed up to 8 threads because this is the number of cores on the test machine.  Once we pass the number of cores on the machine, the computer starts to create virtual threads, and these cause execution time to substantially increase.  Increasing the threads from 8 to 9 increased the execution time almost 10 fold.  Tests will be done to see if the execution time keeps its trend while executing with virtual threads, and with different computers with different processors.  However, we can still see the general trend of execution time and thread number using only up to 8 threads.  
 
+\subsection*{\textsc{Difficulties}}
+When implementing these locking algorithms, many bugs were encountered.  Both the CLH and MCS locks use a Queue for their implementation.  This queue is consisted of a "QNode" class; within this QNode class, the variables were initially declared as normal integers and normal references to next.  We found that this caused data racing to occur or false references to nodes.  These variables were changed to be atomic integers and atomic references.  Using atomic variables types helped stop data racing and thread failures.
 \end{document}
