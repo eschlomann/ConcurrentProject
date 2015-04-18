@@ -11,6 +11,7 @@ public class fullTest{
 	private ReentrantLock r_lock;
 	private SZY_Lock s_lock;
 	private Bakery b_lock;
+	private Eis_Mcg e_lock;
 	// T lock;
 
 	//SubClass that is the "thread"
@@ -49,6 +50,9 @@ public class fullTest{
 					case "Bakery":
 						b_lock.lock(this.threadID);
 					break;
+					case "EM":
+						e_lock.lock(this.threadID);
+					break;
 				}
 				try{
 					counter = counter + 1;
@@ -70,6 +74,9 @@ public class fullTest{
 						case "Bakery":
 							b_lock.unlock(this.threadID);
 						break;
+						case "EM":
+							e_lock.unlock(this.threadID);
+						break;
 					}
 				}
 			}
@@ -84,6 +91,7 @@ public class fullTest{
 		r_lock = new ReentrantLock();
 		s_lock = new SZY_Lock(NUMTHREADS);
 		b_lock = new Bakery(NUMTHREADS);
+		e_lock = new Eis_Mcg(NUMTHREADS);
 		threads = new Thread[NUMTHREADS];
 
 		for (int i = 0; i < NUMTHREADS; i++){
@@ -171,6 +179,19 @@ public class fullTest{
 			}
 			long endTime = System.nanoTime();
 			System.out.println("Bakery : "+((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
+		}
+		if (lockType.equals("EM") || lockType.equals("all")) {
+			long startTime = System.nanoTime();
+		 	for(int i = 0; i < numTries; i++){
+				fullTest Tester = new fullTest();
+				try{
+					Tester.test("EM", NUMTHREADS, countToThis);
+				}
+				catch(Exception e) {}
+				counter = 0;
+			}
+			long endTime = System.nanoTime();
+			System.out.println("Eis_Mcg : "+((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
 		}
 	}
 }
