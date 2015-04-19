@@ -3,46 +3,46 @@ public class Eis_Mcg {
 	private int out_cr 		= 0;
 	private int want_cr 	= 1;
 	private int claim_cr 	= 2;
-	// private enum procphase { out_cr, want_cr, claim_cr};
-	private int turn;
-	private int[] procphase;
+	private volatile int turn;
+	private volatile int[] flags;
 
 	public Eis_Mcg(int nproc){
-
 		this.n = nproc;
-		procphase = new int[nproc];
-
+		this.flags = new int[nproc];
 		this.turn = nproc - 1;
-
-		for(int i = 0; i < this.n; i++)
-			procphase[i] = out_cr;
+		for(int i = 0; i < this.n; i++){
+			this.flags[i] = out_cr;
+		}
 	}
 
 	public void lock(int ID){
-		procphase[ID] = want_cr;
-		int j = this.turn;
+		this.flags[ID] = want_cr;
+		int index = this.turn;
 		do{
-			while(j != ID){
-				if(procphase[j] == out_cr)
-					j = (j + 1) % this.n;
+			while(index != ID){
+				if(this.flags[index] == out_cr){
+					index = (index + 1) % this.n;
+				}
 				else
-					j = this.turn;
+					index = this.turn;
 			}
-			procphase[ID] = claim_cr;
-			j = (j + 1) % this.n;
-			while(procphase[j] != claim_cr)
-				j = (j + 1) % this.n;
-		}
-		while(!(j == ID && (turn == ID || procphase[this.turn] == out_cr)));
+			this.flags[ID] = claim_cr;
+
+			index = 0;
+			while((index < this.n) && ((index == ID) || (this.flags[ID] != claim_cr))){
+				index++;
+			}
+
+		} while((index >= this.n) && ((this.turn == ID) || (this.flags[this.turn] == out_cr)));
 		this.turn = ID;
 	}
 
 	public void unlock(int ID){
-		int j = (this.turn + 1) % this.n;
-		while(procphase[j] == out_cr)
-			j = (j + 1) % this.n;
-		this.turn = j;
-		procphase[ID] = out_cr;
+		int index = (this.turn + 1) % this.n;
+		while(this.flags[index] == out_cr)
+			index = (index + 1) % this.n;
+		this.turn = index;
+		this.flags[ID] = out_cr;
 	}
 }
 
