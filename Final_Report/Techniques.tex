@@ -1,0 +1,14 @@
+\documentclass[FinalReport.tex]{subfiles}
+\begin{document}
+
+\bigskip
+
+\section*{\textsc{\Large Techniques}}
+
+	To have a system in which shared variables are not manipulated at the same time, we develop ways that threads will wait on others until it is their turn to edit the variable.  
+	
+	Some locks, such as MCS and CLH, use a queue to place in order the threads that wish to enter the critical section.  This method is a first come first served system.  One thread (T1) will "announce" that it wishes to enter the critical section, and if before, another thread (T2) "announced" it also wants to enter the critical section.  The thread T1 will have to wait until T2 has completed its tasks in the critical section.
+	
+	Another method used by the Bakery Algorithm is also First come first served.  This method uses a ticketing system.  
+
+\end{document}
