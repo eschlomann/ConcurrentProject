@@ -19,7 +19,7 @@ public class SZY_Lock {
 		//printFlagArray();
 		if ( testWaiting() == true ) {
 			flagArray[me] = new AtomicInteger(2);
-			while ( testCS(me) == true ) { /*printFlagArray();*/}
+			while ( testCS(me) == false ) {/*printFlagArray();*/}
 		}
 		flagArray[me] = new AtomicInteger(4);
 		//printFlagArray();
@@ -57,7 +57,7 @@ public class SZY_Lock {
 	}
 
 	private boolean checkLowerFinished(int threadID) {
-		for ( int i = 0; i < threadID-1; i++ ) {
+		for ( int i = 0; i < threadID; i++ ) {
 			if( flagArray[i].get() == 2 || flagArray[i].get() == 3 || flagArray[i].get() == 4) {
 				return false;
 			}
@@ -65,7 +65,7 @@ public class SZY_Lock {
 	}
 
 	private boolean checkWaitingRoom(int threadID) {
-		for ( int i = threadID + 1; i < NUMTHREADS; i++ ) {
+		for ( int i = threadID + 1 ; i < NUMTHREADS; i++ ) {
 			if( flagArray[i].get() == 2 || flagArray[i].get() == 3) {
 				return false;
 			}

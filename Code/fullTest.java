@@ -44,9 +44,9 @@ public class fullTest{
 					case "java":
 						r_lock.lock();
 					break;
-					// case "SZY":
-					// 	s_lock.lock(this.threadID);
-					// break;
+					case "SZY":
+						s_lock.lock(this.threadID);
+					break;
 					case "Bakery":
 						b_lock.lock(this.threadID);
 					break;
