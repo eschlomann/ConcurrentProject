@@ -7,8 +7,21 @@
 
 	To have a system in which shared variables are not manipulated at the same time, we develop ways that threads will wait on others until it is their turn to edit the variable.  
 	
-	Some locks, such as MCS and CLH, use a queue to place in order the threads that wish to enter the critical section.  This method is a first come first served system.  One thread (T1) will "announce" that it wishes to enter the critical section, and if before, another thread (T2) "announced" it also wants to enter the critical section.  The thread T1 will have to wait until T2 has completed its tasks in the critical section.
-	
-	Another method used by the Bakery Algorithm is also First come first served.  This method uses a ticketing system.  
+	\begin{itemize}
+		\item \textsc{ \bf MCH \& CLH} \\
+			Some locks, such as MCS and CLH, use a queue to place in order the threads that wish to enter the critical section.  This method is a first come first served system.  One thread (T1) will "announce" that it wishes to enter the critical section, and if before, another thread (T2) "announced" it also wants to enter the critical section.  The thread T1 will have to wait until T2 has completed its tasks in the critical section.
+			
+		\item \textsc{ \bf Bakery}\\
+		The method used by the Bakery Algorithm is also First come first served.  This method uses a ticketing system.  This system has each thread that wants to enter the critical section take a number.  These number are increasing in size.  The thread with the next lowest number will then enter the critical section as the other threads wait until their turn.
 
+		\item \textsc{ \bf Eisenberg \& McGuire}\\
+		This Eisenberg \& McGuire Algorithm cycles through waiting threads to establish a bound.  The priority of each thread is rotated around this "cycle".  The thread that is in the critical section or most recently in the critical section has the highest priority.  The threads waiting in the "clockwise" direction have decreasing priority levels from the highest priority thread.  There are three different states, (Don't want the critical section, Want to go into the critical section, and In the critical section) to indicate intention. 
+		
+		\item \textsc{ \bf Szyma\`{n}ski's}\\
+		
+	\end{itemize}
+	
+	
+	
+	
 \end{document}
