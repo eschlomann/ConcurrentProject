@@ -9,6 +9,7 @@ public class fullTest{
 	private CLH_Lock c_lock;
 	private MCS_Lock m_lock;
 	private ReentrantLock r_lock;
+	private ReentrantLock r_lock_fair;
 	private SZY_Lock s_lock;
 	private Bakery b_lock;
 	private Eis_Mcg e_lock;
@@ -44,6 +45,9 @@ public class fullTest{
 					case "java":
 						r_lock.lock();
 					break;
+					case "javaFair":
+						r_lock_fair.lock();
+					break;
 					case "SZY":
 						s_lock.lock(this.threadID);
 					break;
@@ -68,6 +72,9 @@ public class fullTest{
 						case "java":
 							r_lock.unlock();
 						break;
+						case "javaFair":
+							r_lock_fair.unlock();
+						break;
 						case "SZY":
 							s_lock.unlock(this.threadID);
 						break;
@@ -89,6 +96,7 @@ public class fullTest{
 		c_lock = new CLH_Lock();
 		m_lock = new MCS_Lock();
 		r_lock = new ReentrantLock();
+		r_lock_fair = new ReentrantLock(true);
 		s_lock = new SZY_Lock(NUMTHREADS);
 		b_lock = new Bakery(NUMTHREADS);
 		e_lock = new Eis_Mcg(NUMTHREADS);
@@ -154,6 +162,19 @@ public class fullTest{
 			long endTime = System.nanoTime(); 
 			System.out.println("java : "+((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
 		}
+		if (lockType.equals("javaFair") || lockType.equals("all")) {
+			long startTime = System.nanoTime();
+		 	for(int i = 0; i < numTries; i++){
+				fullTest Tester = new fullTest();
+				try{
+					Tester.test("javaFair", NUMTHREADS, countToThis);
+				}
+				catch(Exception e) {}
+				counter = 0;
+			}
+			long endTime = System.nanoTime(); 
+			System.out.println("javaFair : "+((endTime - startTime)/numTries)/1000000 + " milliseconds avg");
+		}
 		if (lockType.equals("SZY") || lockType.equals("all")) {
 			long startTime = System.nanoTime();
 		 	for(int i = 0; i < numTries; i++){
@@ -162,10 +183,10 @@ public class fullTest{
 					Tester.test("SZY", NUMTHREADS, countToThis);
 				}
 				catch(Exception e) {}
-				System.out.println(counter);
+				counter = 0;
 			}
 			long endTime = System.nanoTime();
-			System.out.println("SZY : "+(endTime - startTime)/1000000 + " milliseconds");
+			System.out.println("SZY : "+((endTime - startTime)/numTries)/1000000 + " milliseconds");
         }
 		if (lockType.equals("Bakery") || lockType.equals("all")) {
 			long startTime = System.nanoTime();

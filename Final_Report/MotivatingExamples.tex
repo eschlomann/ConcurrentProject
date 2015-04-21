@@ -5,4 +5,83 @@
 
 \section*{\textsc{\Large Motivating Examples}}
 
+	The motivation for exploring the efficiencies of different types of locks was driven by Java's implementation of the Reentrant lock writen by Doug Lea. The basic locking of this model utilized the compareAndSetState( int expected , int update ) from the AbstractQueuedSynchronizer class. When a user calls lock. The following code is executed:
+	
+	\smallskip
+	
+	\begin{lstlisting}
+	final void lock() {
+        if (compareAndSetState(0, 1))
+            owner = Thread.currentThread();
+        else
+            acquire(1);
+    }
+	\end{lstlisting}
+	\smallskip
+	(NOTE: this is for non fair case, in fair case lock() simply calls acquire(1))
+	\smallskip
+
+	The method uses a compare and set to see if the lock's state is currently not taken or unlocked (State == 0). Then it sets the lock to taken (1), and names the owner as the Thread that just called the lock. If the lock is currently taken it calls the aquire(1) function: 
+
+	\smallskip
+
+	\begin{lstlisting}
+	public final void acquire(int arg) {
+		if (!tryAcquire(arg) && acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+			selfInterrupt();
+	}
+	\end{lstlisting}
+
+	This function spins on the tryAcquire() function which attempts to insigate the compareSetState(0,1) over and over until it is sucessful. If the first attempt is unsucessful, it adds the tryAcquire() into a queue where it reattempts the tryAcquire() function when it is in the front of the queue. The inclusion of the queue lowers direct contention when many threads are trying to take the lock. The normal lock function uses the nonfairTryAcquire(acquires) function:
+	
+	\begin{lstlisting}
+    final boolean nonfairTryAcquire(int acquires) { 
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {
+            if (compareAndSetState(0, acquires)) {
+                owner = current;
+                return true;
+            }
+        }
+        else if (current == owner) {
+            setState(c+acquires);
+            return true;
+        }
+        return false;
+    }
+	\end{lstlisting}
+	
+	\smallskip
+
+	In this function, the program again uses the compare and set to attempt to take the lock, if it cannot take the lock it returns false and adds itself to the aquire() queue. The queue itself isnt fair as it continuously tries whichever element is first in the queue.
+
+	The java lock also implements a fair version of its TryAcquire fuction:
+
+	\begin{lstlisting}
+    protected final boolean tryAcquire(int acquires) { 
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {
+            Thread first = getFirstQueuedThread();
+            if ((first == null || first == current) && 
+                compareAndSetState(0, acquires)) {
+                owner = current;
+                return true;
+            }
+        }
+        else if (current == owner) {
+            setState(c+acquires);
+            return true;
+        }
+        return false;
+    }
+    \end{lstlisting}
+
+    Here, the try acquire method actually uses whats in the queue to make the process fair. The thread gets the first element in the queue. If the queue is empty or the thread is the first thread, it attempts the compare and set. This means that the thread that is the first item in the queue has to go before any of the other items and does entail a fair implementation.
+
+	The fair and unfair implementations of java's reentrant lock motivated testing of other concurrent locking mechanisms such as CLH and MCS that are very similar to the fair implementation, as well testing of inferior but unique methods that were some of the first $n$-thread locking solutions.
+
+
+
 \end{document}
