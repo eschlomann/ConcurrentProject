@@ -13,6 +13,7 @@ public class fullTest{
 	private SZY_Lock s_lock;
 	private Bakery b_lock;
 	private Eis_Mcg e_lock;
+	private static boolean contentionHigh;
 	// T lock;
 
 	//SubClass that is the "thread"
@@ -26,6 +27,9 @@ public class fullTest{
 			this.threadID 		= ID;
 			this.type 			= type;
 			this.countToThis 	= countToThis;
+			if ( contentionHigh == false ) {
+				countToThis = countToThis / 20;
+			}
 		}
 
 
@@ -35,6 +39,13 @@ public class fullTest{
 		public void run(){	
 			// System.out.println(this.type);
 			for ( int i = 0; i < this.countToThis; i++ ){
+				int m_counter = 0;
+				if (contentionHigh == false) {
+					for (int j = 0; j < 20; j++) {
+						m_counter++;
+					}
+				}
+
 				switch(this.type){
 					case "CLH":
 						c_lock.lock();
@@ -59,7 +70,11 @@ public class fullTest{
 					break;
 				}
 				try{
-					counter = counter + 1;
+					if (contentionHigh == false ) {
+						counter = counter + m_counter;
+					} else {
+						counter = counter + 1;
+					}
 				}
 				finally{
 					switch(this.type){
@@ -120,6 +135,13 @@ public class fullTest{
 		int NUMTHREADS 	= Integer.parseInt(args[1]);
 		int countToThis = Integer.parseInt(args[2]);
 		String lockType = args[3];
+		String contention = args[4];
+
+		if (contention.equals("high")) {
+			contentionHigh = true;
+		} else {
+			contentionHigh = false;
+		}
 
 		if (lockType.equals("CLH") || lockType.equals("all")) {
 			long startTime = System.nanoTime();
