@@ -49,10 +49,17 @@ public class SZY_Lock {
 	}
 
 	private boolean testCS(int threadID) {
+		int num2s = 0;
 		for ( int i = 0; i < NUMTHREADS; i++ ) { //WHAT I CHANGED FROM THE PSEUDO CODE ON WIKIPEDIA
 			if( flagArray[i].get() == 4) {
 				return true;
+			} else if (flagArray[i].get() == 2) {
+				num2s++;
 			}
+			if (num2s == NUMTHREADS && threadID == 0) {
+				return true;
+			}
+
 		} return false;
 	}
 
