@@ -3,6 +3,40 @@
 
 \bigskip
 
-\section*{\textsc{\Large Result}}
+\section*{\textsc{\Large Results}}
+
+The first two diagrams show results for the different algorithms running for up to 8 threads with high contention. The slower system does not have results for some of the algorithms at 8 threads as they skew the graph significantly and remove valuable data.
+
+
+\bigskip
+
+
+	\includegraphics[scale = .8]{figures/myComp_1-8_1000.eps}
+	\includegraphics[scale = .8]{figures/evanComp_1-8_1000.eps}
+
+
+\bigskip
+
+The next graph shows the faster system running from 8-16 threads with high contention.
+
+
+\bigskip
+	
+	\begin{center}
+	\includegraphics[scale = .8]{figures/evanComp_1-8_1000.eps}
+	\end{center}	
+
+
+\bigskip
+
+The last graphs again compare the faster and slower system but in this case analyze a low contention scenario.
+
+\bigskip
+
+
+	\includegraphics[scale = .8]{figures/myComp_lowCont16.eps}
+	\includegraphics[scale = .8]{figures/evanComp_lowCont.eps}
+
+\bigskip
 
 \end{document}
