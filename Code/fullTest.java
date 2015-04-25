@@ -23,12 +23,14 @@ public class fullTest{
 		private int threadID;
 		private String type;
 		private int countToThis;
+		private int lowContCount;
 		public threadInstance(int ID, String type, int countToThis){
 			this.threadID 		= ID;
 			this.type 			= type;
 			this.countToThis 	= countToThis;
+			this.lowContCount 	= countToThis;
 			if ( contentionHigh == false ) {
-				countToThis = countToThis / 20;
+				this.lowContCount = countToThis / countToThis;
 			}
 		}
 
@@ -38,10 +40,10 @@ public class fullTest{
 		//other threads from editting.
 		public void run(){	
 			// System.out.println(this.type);
-			for ( int i = 0; i < this.countToThis; i++ ){
+			for ( int i = 0; i < this.lowContCount; i++ ){
 				int m_counter = 0;
 				if (contentionHigh == false) {
-					for (int j = 0; j < 20; j++) {
+					for (int j = 0; j < this.countToThis; j++) {
 						m_counter++;
 					}
 				}
@@ -192,6 +194,7 @@ public class fullTest{
 					Tester.test("javaFair", NUMTHREADS, countToThis);
 				}
 				catch(Exception e) {}
+				System.out.println(counter);
 				counter = 0;
 			}
 			long endTime = System.nanoTime(); 
@@ -218,6 +221,7 @@ public class fullTest{
 					Tester.test("Bakery", NUMTHREADS, countToThis);
 				}
 				catch(Exception e) {}
+
 				counter = 0;
 			}
 			long endTime = System.nanoTime();
@@ -231,6 +235,7 @@ public class fullTest{
 					Tester.test("EM", NUMTHREADS, countToThis);
 				}
 				catch(Exception e) {}
+				System.out.println(counter);
 				counter = 0;
 			}
 			long endTime = System.nanoTime();
